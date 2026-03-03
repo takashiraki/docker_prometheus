@@ -8,7 +8,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
     restart: unless-stopped
     networks:
       - my_proxy_network
@@ -58,3 +59,6 @@ services:
 networks:
   my_proxy_network:
     external: true
+
+volumes:
+  prometheus_data:
