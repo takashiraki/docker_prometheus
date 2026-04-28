@@ -5,11 +5,36 @@ services:
     environment:
       - VIRTUAL_HOST=prometheus.localhost
       - VIRTUAL_PORT=9090
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - my_proxy_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: my_grafana
+    environment:
+      - VIRTUAL_HOST=grafana.localhost
+      - VIRTUAL_PORT=3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped
+    networks:
+      - my_proxy_network
+  tempo:
+    image: grafana/tempo:latest
+    container_name: my-tempo
+    environment:
+      - VIRTUAL_HOST=tempo.localhost
+      - VIRTUAL_PORT=3200
+    volumes:
+      - ./tempo:/etc/tempo
+      - tempo_data:/var/lib/tempo
+    user: root
+    command: ["-config.file=/etc/tempo/tempo.yaml"]
     restart: unless-stopped
     networks:
       - my_proxy_network
@@ -62,3 +87,5 @@ networks:
 
 volumes:
   prometheus_data:
+  grafana_data:
+  tempo_data:
