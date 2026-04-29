@@ -10,6 +10,13 @@ distributor:
         grpc:
           endpoint: 0.0.0.0:4317
 
+ingester:
+  max_block_duration: 5m
+
+compactor:
+  compaction:
+    block_retention: 24h
+
 query_frontend:
   search:
     duration_slo: 5s
