@@ -25,7 +25,7 @@ services:
     networks:
       - my_proxy_network
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:2.8.1
     container_name: my-tempo
     environment:
       - VIRTUAL_HOST=tempo.localhost
@@ -35,48 +35,6 @@ services:
       - tempo_data:/var/lib/tempo
     user: root
     command: ["-config.file=/etc/tempo/tempo.yaml"]
-    restart: unless-stopped
-    networks:
-      - my_proxy_network
-
-  node_exporter:
-    image: prom/node-exporter:latest
-    container_name: my_node_exporter
-    environment:
-      - VIRTUAL_HOST=node-exporter.localhost
-      - VIRTUAL_PORT=9100
-    ports:
-      - "9100:9100"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--path.rootfs=/rootfs'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    restart: unless-stopped
-    networks:
-      - my_proxy_network
-
-  node_exporter_1:
-    image: prom/node-exporter:latest
-    container_name: my_node_exporter_1
-    environment:
-      - VIRTUAL_HOST=node-exporter-1.localhost
-      - VIRTUAL_PORT=9100
-    ports:
-      - "9101:9100"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--path.rootfs=/rootfs'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
     networks:
       - my_proxy_network
