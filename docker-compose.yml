@@ -1,10 +1,10 @@
 services:
   prometheus:
     image: prom/prometheus:latest
-    container_name: my_prometheus
+    container_name: ${PROMETHEUS_CONTAINER_NAME}
     environment:
-      - VIRTUAL_HOST=prometheus.localhost
-      - VIRTUAL_PORT=9090
+      - VIRTUAL_HOST=${PROMETHEUS_VIRTUAL_HOST}
+      - VIRTUAL_PORT=${PROMETHEUS_VIRTUAL_PORT}
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
@@ -14,10 +14,10 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: my_grafana
+    container_name: ${GRAFANA_CONTAINER_NAME}
     environment:
-      - VIRTUAL_HOST=grafana.localhost
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=${GRAFANA_VIRTUAL_HOST}
+      - VIRTUAL_PORT=${GRAFANA_VIRTUAL_PORT}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -26,10 +26,10 @@ services:
       - my_proxy_network
   tempo:
     image: grafana/tempo:2.8.1
-    container_name: my-tempo
+    container_name: ${TEMPO_CONTAINER_NAME}
     environment:
-      - VIRTUAL_HOST=tempo.localhost
-      - VIRTUAL_PORT=3200
+      - VIRTUAL_HOST=${TEMPO_VIRTUAL_HOST}
+      - VIRTUAL_PORT=${TEMPO_VIRTUAL_PORT}
     volumes:
       - ./tempo:/etc/tempo
       - tempo_data:/var/lib/tempo
